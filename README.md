@@ -36,3 +36,4 @@ or with the `data-provide` html attribute
 
 * allows text like dates from json by pushing startDate / endDate through `new Date()`
 * allows you to turn off the header with `hideHeader` option
+* allows you to specify a `startMonth` option

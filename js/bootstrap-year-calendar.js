@@ -36,6 +36,7 @@
 
 			this.options = {
 				startYear: !isNaN(parseInt(opt.startYear)) ? parseInt(opt.startYear) : new Date().getFullYear(),
+				startMonth: !isNaN(parseInt(opt.startMonth)) ? parseInt(opt.startMonth) : 0,
 				minDate: opt.minDate instanceof Date ? opt.minDate : null,
 				maxDate: opt.maxDate instanceof Date ? opt.maxDate : null,
 				language: (opt.language != null && dates[opt.language] != null) ? opt.language : 'en',
@@ -178,14 +179,20 @@
 			var monthsDiv = $(document.createElement('div'));
 			monthsDiv.addClass('months-container');
 
+			var startMonth = this.options.startMonth;
+			var startYear = this.options.startYear;
+
 			for(var m = 0; m < 12; m++) {
 				/* Container */
+
+				var currentMonth = (startMonth + m) % 12;
 				var monthDiv = $(document.createElement('div'));
 				monthDiv.addClass('month-container');
-				monthDiv.data('month-id', m);
+				monthDiv.data('month-id', currentMonth);
+				monthDiv.data('year-id', startYear);
 
-				var firstDate = new Date(this.options.startYear, m, 1);
-
+				var firstDate = new Date(startYear, currentMonth, 1);
+				console.log(startYear);
 				var table = $(document.createElement('table'));
 				table.addClass('month');
 
@@ -197,7 +204,7 @@
 				var titleCell = $(document.createElement('th'));
 				titleCell.addClass('month-title');
 				titleCell.attr('colspan', this.options.displayWeekNumber ? 8 : 7);
-				titleCell.text(dates[this.options.language].months[m]);
+				titleCell.text(dates[this.options.language].months[currentMonth]);
 
 				titleRow.append(titleCell);
 				thead.append(titleRow);
@@ -231,7 +238,7 @@
 
 				/* Days */
 				var currentDate = new Date(firstDate.getTime());
-				var lastDate = new Date(this.options.startYear, m + 1, 0);
+				var lastDate = new Date(startYear, currentMonth + 1, 0);
 
 				var weekStart = dates[this.options.language].weekStart
 
@@ -280,7 +287,7 @@
 							cellContent.addClass('day-content');
 							cellContent.text(currentDate.getDate());
 							cell.append(cellContent);
-
+							console.log(currentDate);
 							if(this.options.customDayRenderer) {
 								this.options.customDayRenderer(cellContent, currentDate);
 							}
@@ -298,6 +305,10 @@
 				monthDiv.append(table);
 
 				monthsDiv.append(monthDiv);
+				if (currentMonth == 11){
+					// if december, increment the year
+					startYear++;
+				}
 			}
 
 			this.element.append(monthsDiv);
@@ -307,9 +318,10 @@
 			if(this.options.dataSource != null && this.options.dataSource.length > 0) {
 				this.element.find('.month-container').each(function() {
 					var month = $(this).data('month-id');
+					var year = $(this).data('year-id');
 
-					var firstDate = new Date(_this.options.startYear, month, 1);
-					var lastDate = new Date(_this.options.startYear, month + 1, 0);
+					var firstDate = new Date(year, month, 1);
+					var lastDate = new Date(year, month + 1, 0);
 
 					if((_this.options.minDate == null || lastDate >= _this.options.minDate) && (_this.options.maxDate == null || firstDate <= _this.options.maxDate))
 					{
@@ -325,7 +337,7 @@
 
 						if(monthData.length > 0) {
 							$(this).find('.day-content').each(function() {
-								var currentDate = new Date(_this.options.startYear, month, $(this).text());
+								var currentDate = new Date(year, month, $(this).text());
 
 								var dayData = [];
 
