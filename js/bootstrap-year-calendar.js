@@ -653,7 +653,8 @@
 
                 this.element.find('.month-container').each(function () {
 					var monthId = $(this).data('month-id');
-                    if (minDate.getMonth() <= monthId && maxDate.getMonth() >= monthId) {
+					var yearId = $(this).data('year-id');
+                    if (minDate.getMonth() <= monthId && maxDate.getMonth() >= monthId && minDate.getYear() <= yearId && maxDate.getYear() >= yearId) {
                         $(this).find('td.day:not(.old, .new)').each(function () {
                             var date = _this._getDate($(this));
                             if (date >= minDate && date <= maxDate) {
@@ -769,7 +770,7 @@
 		_getDate: function(elt) {
 			var day = elt.children('.day-content').text();
 			var month = elt.closest('.month-container').data('month-id');
-			var year = this.options.startYear;
+			var year = elt.closest('.month-container').data('year-id');
 
 			return new Date(year, month, day);
 		},
