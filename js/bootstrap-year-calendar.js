@@ -316,7 +316,9 @@
 						var monthData = [];
 
 						for(var i in _this.options.dataSource) {
-							if(!(_this.options.dataSource[i].startDate > lastDate) || (_this.options.dataSource[i].endDate < firstDate)) {
+							var startDate = new Date(_this.options.dataSource[i].startDate).setHours(0,0,0,0);
+							var endDate = new Date(_this.options.dataSource[i].endDate).setHours(0,0,0,0);
+							if(!(startDate > lastDate) || (endDate < firstDate)) {
 								monthData.push(_this.options.dataSource[i]);
 							}
 						}
@@ -327,13 +329,12 @@
 
 								var dayData = [];
 
-								if((_this.options.minDate == null || currentDate >= _this.options.minDate) && (_this.options.maxDate == null || currentDate <= _this.options.maxDate))
-								{
+								if((_this.options.minDate == null || currentDate >= _this.options.minDate) && (_this.options.maxDate == null || currentDate <= _this.options.maxDate)){
 									for(var i in monthData) {
-										var startDate = new Date(monthData[i].startDate);
-										var endDate = new Date(monthData[i].endDate);
+										var startDate = new Date(monthData[i].startDate).setHours(0,0,0,0);
+										var endDate = new Date(monthData[i].endDate).setHours(0,0,0,0);
+
 										if(startDate <= currentDate && endDate >= currentDate) {
-											console.log(monthData[i])
 											dayData.push(monthData[i]);
 										}
 									}
@@ -781,8 +782,8 @@
 
 			if(this.options.dataSource && date) {
 				for(var i in this.options.dataSource) {
-					var startDate = new Date(this.options.dataSource[i].startDate);
-					var endDate = new Date(this.options.dataSource[i].endDate);
+					var startDate = new Date(this.options.dataSource[i].startDate).setHours(0,0,0,0);
+					var endDate = new Date(this.options.dataSource[i].endDate).setHours(0,0,0,0);
 					if(startDate <= date && endDate >= date) {
 						events.push(this.options.dataSource[i]);
 					}
