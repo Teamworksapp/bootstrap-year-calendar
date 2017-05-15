@@ -326,7 +326,10 @@
 								if((_this.options.minDate == null || currentDate >= _this.options.minDate) && (_this.options.maxDate == null || currentDate <= _this.options.maxDate))
 								{
 									for(var i in monthData) {
-										if(monthData[i].startDate <= currentDate && monthData[i].endDate >= currentDate) {
+										var startDate = new Date(monthData[i].startDate);
+										var endDate = new Date(monthData[i].endDate);
+										if(startDate <= currentDate && endDate >= currentDate) {
+											console.log(monthData[i])
 											dayData.push(monthData[i]);
 										}
 									}
