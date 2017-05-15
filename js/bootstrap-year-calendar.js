@@ -50,7 +50,8 @@
 				enableContextMenu: opt.enableContextMenu != null ? opt.enableContextMenu : false,
 				contextMenuItems: opt.contextMenuItems instanceof Array ? opt.contextMenuItems : [],
 				customDayRenderer : $.isFunction(opt.customDayRenderer) ? opt.customDayRenderer : null,
-				customDataSourceRenderer : $.isFunction(opt.customDataSourceRenderer) ? opt.customDataSourceRenderer : null
+				customDataSourceRenderer : $.isFunction(opt.customDataSourceRenderer) ? opt.customDataSourceRenderer : null,
+				hideHeader : opt.hideHeader != null ? opt.hideHeader : false
 			};
 
 			this._initializeDatasourceColors();
@@ -77,7 +78,10 @@
 		_render: function() {
 			this.element.empty();
 
-			this._renderHeader();
+			if(this.options.hideHeader == false){
+				this._renderHeader();
+			}
+
 			this._renderBody();
 			this._renderDataSource();
 
@@ -777,7 +781,9 @@
 
 			if(this.options.dataSource && date) {
 				for(var i in this.options.dataSource) {
-					if(this.options.dataSource[i].startDate <= date && this.options.dataSource[i].endDate >= date) {
+					var startDate = new Date(this.options.dataSource[i].startDate);
+					var endDate = new Date(this.options.dataSource[i].endDate);
+					if(startDate <= date && endDate >= date) {
 						events.push(this.options.dataSource[i]);
 					}
 				}
