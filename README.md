@@ -27,7 +27,12 @@ or
 ```
 $('.calendar').calendar(options)
 ```
-or with the `data-provide` html attribute 
+or with the `data-provide` html attribute
 ```
 <div data-provide="calendar"></div>
 ```
+
+## This fork
+
+* allows text like dates from json by pushing startDate / endDate through `new Date()`
+* allows you to turn off the header with `hideHeader` option
